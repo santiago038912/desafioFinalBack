@@ -2,7 +2,6 @@ package main
 
 import (
 	"log"
-	"os"
 
 	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
@@ -12,13 +11,9 @@ import (
 	"github.com/desafioFinalBack/cmd/server/handler"
 	"github.com/desafioFinalBack/internal/dentist"
 	"github.com/desafioFinalBack/pkg/middleware"
-	_ "github.com/swaggo/swag/cmd/swag"
-	store "github.com/desafioFinalBack/pkg/storeDentists"
+	store "github.com/desafioFinalBack/pkg/store"
 
 	"github.com/joho/godotenv"
-
-	swaggerFiles "github.com/swaggo/files"
-	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 func main() {
@@ -31,15 +26,12 @@ func main() {
 		panic("Error loading .env file: " + err.Error())
 	}
 
-	storage := store.NewSqlStore(db)
-	repo := dentist.NewRepository(storage)
-	service := dentist.NewService(repo)
-	dentistHandler := handler.NewProductHandler(service)
+	storageDentist := store.NewSqlStoreDentist(db)
+	repoDentist := dentist.NewRepository(storageDentist)
+	serviceDentist := dentist.NewService(repoDentist)
+	dentistHandler := handler.NewProductHandler(serviceDentist)
 
 	r := gin.Default()
-
-	docs.SwaggerInfo.Host = os.Getenv("HOST")
-	r.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	dentists := r.Group("/dentists")
 	{
@@ -49,5 +41,6 @@ func main() {
 		dentists.PATCH(":id", middleware.Authentication(), dentistHandler.Patch())
 		dentists.DELETE(":id", middleware.Authentication(), dentistHandler.Delete())
 	}
+
 	r.Run(":8080")
 }
