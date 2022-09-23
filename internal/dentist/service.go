@@ -6,8 +6,8 @@ import (
 
 type Service interface {
 	GetByID(id int) (domain.Dentist, error)
-	Create(p domain.Dentist) (domain.Dentist, error)
-	Update(id int, p domain.Dentist) (domain.Dentist, error)
+	Create(dentist domain.Dentist) (domain.Dentist, error)
+	Update(id int, dentist domain.Dentist) (domain.Dentist, error)
 	Delete(id int) error
 }
 

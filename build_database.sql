@@ -1,4 +1,5 @@
-CREATE DATABASE IF NOT EXISTS `desafioFinalBackDB` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+CREATE DATABASE IF NOT EXISTS `desafioFinalBackDB` 
+/*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 
 USE `desafioFinalBackDB`;
 
@@ -30,6 +31,24 @@ CREATE TABLE `dentists` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `patients`
+--
+
+DROP TABLE IF EXISTS `patients`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+
+CREATE TABLE `patients` (
+  `id` int DEFAULT NULL,
+  `name` varchar(50) DEFAULT NULL,
+  `last_name` varchar(50) DEFAULT NULL,
+  `address` varchar(50) DEFAULT NULL,
+  `dni` int DEFAULT NULL,
+  `date` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `destists`
 --
 
@@ -41,6 +60,21 @@ INSERT INTO `dentists` VALUES (1, 'Pepe', 'Mujica', '2346-9346'),(2, 'Gustavo', 
 
 /*!40000 ALTER TABLE `dentists` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Dumping data for table `patients`
+--
+
+LOCK TABLES `patients` WRITE;
+
+/*!40000 ALTER TABLE `patients` DISABLE KEYS */;
+
+INSERT INTO `patients` VALUES (1, 'Roy', 'Barreras', 'Carrera 59 #29 sur - 92',2849573,'10/08/21'),(2, 'Aida', 'Merlano', 'Carrera 20 #85 norte - 10',7492085,'05/12/20'),(2, 'Maria Fernanda', 'Cabal', 'Carrera 69 #420 este - 13',9365921,'30/02/19');
+
+/*!40000 ALTER TABLE `patients` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;

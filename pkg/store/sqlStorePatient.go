@@ -33,7 +33,7 @@ func (s *SqlStorePatient) CreatePatient(patient domain.Patient) error {
 	if err != nil {
 		return err
 	}
-	res, err := st.Exec(patient.Id, patient.Name, patient.LastName, patient.Address, patient.DNI, patient.Date)
+	res, err := st.Exec(&patient.Id, &patient.Name, &patient.LastName, &patient.Address, &patient.DNI, &patient.Date)
 	if err != nil {
 		return err
 	}
@@ -51,7 +51,7 @@ func (s *SqlStorePatient) UpdatePatient(patient domain.Patient) error {
 		return err
 	}
 	
-	_, err = stmt.Exec(patient.Name, patient.LastName, patient.Address, patient.DNI, patient.Date, patient.Id)
+	_, err = stmt.Exec(&patient.Name, &patient.LastName, &patient.Address, &patient.DNI, &patient.Date, &patient.Id)
 	if err != nil {
 		return err
 	}

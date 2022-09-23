@@ -32,7 +32,7 @@ func (s *SqlStoreDentist) CreateDentist(dentist domain.Dentist) error {
 	if err != nil {
 		return err
 	}
-	res, err := st.Exec(dentist.Id, dentist.Name, dentist.LastName, dentist.RegisterNumber)
+	res, err := st.Exec(&dentist.Id, &dentist.Name, &dentist.LastName, &dentist.RegisterNumber)
 	if err != nil {
 		return err
 	}
@@ -49,10 +49,16 @@ func (s *SqlStoreDentist) UpdateDentist(dentist domain.Dentist) error {
 		return err
 	}
 	
-	_, err = stmt.Exec(dentist.Name, dentist.LastName, dentist.RegisterNumber, dentist.Id)
+	res, err := stmt.Exec(&dentist.Name, &dentist.LastName, &dentist.RegisterNumber, &dentist.Id)
 	if err != nil {
 		return err
 	}
+
+	_, err = res.RowsAffected()
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

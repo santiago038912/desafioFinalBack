@@ -17,13 +17,26 @@ type StoreInterfaceDentist interface {
 }
 
 type StoreInterfacePatient interface {
-	// Read devuelve un dentista por su id
+	// Read devuelve un paciente por su id
 	ReadPatient(id int) (domain.Patient, error)
-	// Create agrega un nuevo dentista
-	CreatePatient(dentist domain.Patient) error
-	// Update actualiza un dentista
-	UpdatePatient(dentist domain.Patient) error
-	// Delete elimina un dentista
+	// Create agrega un nuevo paciente
+	CreatePatient(patient domain.Patient) error
+	// Update actualiza un paciente
+	UpdatePatient(patient domain.Patient) error
+	// Delete elimina un paciente
 	DeletePatient(id int) error
 
+}
+
+type StoreInterfaceTurn interface {
+	// ReadTurn devuelve un paciente por su id
+	ReadTurn(id int) (domain.Turn, error)
+	// CreateTurn agrega un nuevo paciente
+	CreateTurn(patient domain.Turn) error
+	// UpdateTurn actualiza un paciente
+	UpdateTurn(patient domain.Turn) error
+	// DeleteTurn elimina un paciente
+	DeleteTurn(id int) error
+	// ReadTurnByDni devuelve un paciente por su id
+	ReadTurnByDni(dni int) (domain.Turn, error)
 }

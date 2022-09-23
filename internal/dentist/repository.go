@@ -2,7 +2,7 @@ package dentist
 
 import (
 	"github.com/desafioFinalBack/internal/domain"
-	store "github.com/desafioFinalBack/pkg/store"
+	"github.com/desafioFinalBack/pkg/store"
 	"errors"
 )
 
@@ -30,7 +30,6 @@ func (r *repository) GetByID(id int) (domain.Dentist, error) {
 		return domain.Dentist{}, errors.New("dentist not found")
 	}
 	return dentist, nil
-
 }
 
 // Create crea un nuevo dentista
