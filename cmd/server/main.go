@@ -2,7 +2,6 @@ package main
 
 import (
 	"log"
-	"os"
 
 	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
@@ -11,14 +10,12 @@ import (
 
 	"github.com/desafioFinalBack/cmd/server/handler"
 	"github.com/desafioFinalBack/internal/dentist"
+	"github.com/desafioFinalBack/internal/patient"
+	"github.com/desafioFinalBack/internal/turn"
 	"github.com/desafioFinalBack/pkg/middleware"
-	_ "github.com/swaggo/swag/cmd/swag"
-	store "github.com/desafioFinalBack/pkg/storeDentists"
+	"github.com/desafioFinalBack/pkg/store"
 
 	"github.com/joho/godotenv"
-
-	swaggerFiles "github.com/swaggo/files"
-	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 func main() {
@@ -31,23 +28,50 @@ func main() {
 		panic("Error loading .env file: " + err.Error())
 	}
 
-	storage := store.NewSqlStore(db)
-	repo := dentist.NewRepository(storage)
-	service := dentist.NewService(repo)
-	dentistHandler := handler.NewProductHandler(service)
+	storageDentist := store.NewSqlStoreDentist(db)
+	repoDentist := dentist.NewRepository(storageDentist)
+	serviceDentist := dentist.NewService(repoDentist)
+	dentistHandler := handler.NewProductHandler(serviceDentist)
+
+	storagePatient := store.NewSqlStorePatient(db)
+	repoPatient := patient.NewRepository(storagePatient)
+	servicePatient := patient.NewService(repoPatient)
+	patientHandler := handler.NewPatientHandler(servicePatient)
+
+	storageTurn := store.NewSqlStoreTurn(db)
+	repoTurn := turn.NewRepository(storageTurn)
+	serviceTurn := turn.NewService(repoTurn)
+	turnHandler := handler.NewTurnHandler(serviceTurn)
 
 	r := gin.Default()
 
-	docs.SwaggerInfo.Host = os.Getenv("HOST")
-	r.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-
 	dentists := r.Group("/dentists")
 	{
-		dentists.GET(":id", dentistHandler.GetByID())
-		dentists.POST("", middleware.Authentication(), dentistHandler.Post())
-		dentists.PUT(":id", middleware.Authentication(), dentistHandler.Put())
-		dentists.PATCH(":id", middleware.Authentication(), dentistHandler.Patch())
-		dentists.DELETE(":id", middleware.Authentication(), dentistHandler.Delete())
+		dentists.GET(":id", dentistHandler.GetDentistByID())
+		dentists.POST("", middleware.Authentication(), dentistHandler.PostDentist())
+		dentists.PUT(":id", middleware.Authentication(), dentistHandler.PutDentist())
+		dentists.PATCH(":id", middleware.Authentication(), dentistHandler.PatchDentist())
+		dentists.DELETE(":id", middleware.Authentication(), dentistHandler.DeleteDentist())
 	}
+
+	patients := r.Group("/patients")
+	{
+		patients.GET(":id", patientHandler.GetPatientByID())
+		patients.POST("", middleware.Authentication(), patientHandler.PostPatient())
+		patients.PUT(":id", middleware.Authentication(), patientHandler.PutPatient())
+		patients.PATCH(":id", middleware.Authentication(), patientHandler.PatchPatient())
+		patients.DELETE(":id", middleware.Authentication(), patientHandler.DeletePatient())
+	}
+
+	turns := r.Group("/turns")
+	{
+		turns.GET(":id", turnHandler.GetTurnByID())
+		turns.GET(":dni", turnHandler.GetTurnByDNI())
+		turns.POST("", middleware.Authentication(), turnHandler.PostTurn())
+		turns.PUT(":id", middleware.Authentication(), turnHandler.PutTurn())
+		turns.PATCH(":id", middleware.Authentication(), turnHandler.PatchTurn())
+		turns.DELETE(":id", middleware.Authentication(), turnHandler.DeleteTurn())
+	}
+
 	r.Run(":8080")
 }

@@ -2,7 +2,7 @@ package dentist
 
 import (
 	"github.com/desafioFinalBack/internal/domain"
-	store "github.com/desafioFinalBack/pkg/storeDentists"
+	"github.com/desafioFinalBack/pkg/store"
 	"errors"
 )
 
@@ -14,10 +14,10 @@ type Repository interface {
 }
 
 type repository struct {
-	Storage store.StoreInterface
+	Storage store.StoreInterfaceDentist
 }
 
-func NewRepository(storage store.StoreInterface) Repository {
+func NewRepository(storage store.StoreInterfaceDentist) Repository {
 	return &repository{
 		Storage: storage,
 	}
@@ -25,17 +25,16 @@ func NewRepository(storage store.StoreInterface) Repository {
 
 // GetByID busca un dentista por su id
 func (r *repository) GetByID(id int) (domain.Dentist, error) {
-	dentist, err := r.Storage.Read(id)
+	dentist, err := r.Storage.ReadDentist(id)
 	if err != nil {
 		return domain.Dentist{}, errors.New("dentist not found")
 	}
 	return dentist, nil
-
 }
 
 // Create crea un nuevo dentista
 func (r *repository) Create(dentist domain.Dentist) (domain.Dentist, error) {
-	err := r.Storage.Create(dentist)
+	err := r.Storage.CreateDentist(dentist)
 	if err != nil {
 		return domain.Dentist{}, errors.New("error creating dentist")
 	}
@@ -45,7 +44,7 @@ func (r *repository) Create(dentist domain.Dentist) (domain.Dentist, error) {
 // Update actualiza un dentista
 func (r *repository) Update(id int, dentist domain.Dentist) (domain.Dentist, error) {
 	dentist.Id = id
-	err := r.Storage.Update(dentist)
+	err := r.Storage.UpdateDentist(dentist)
 	if err != nil {
 		return domain.Dentist{}, errors.New("error updating dentist")
 	}
@@ -54,7 +53,7 @@ func (r *repository) Update(id int, dentist domain.Dentist) (domain.Dentist, err
 
 // Delete elimina un dentista
 func (r *repository) Delete(id int) error {
-	err := r.Storage.Delete(id)
+	err := r.Storage.DeleteDentist(id)
 	if err != nil {
 		return err
 	}
