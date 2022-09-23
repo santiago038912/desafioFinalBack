@@ -20,7 +20,7 @@ func NewService(r Repository) Service {
 	return &service{r}
 }
 
-// GetByID busca un paciente por su id
+// GetByID busca un turno por su id
 func (s *service) GetByID(id int) (domain.Turn, error) {
 	t, err := s.r.GetByID(id)
 	if err != nil {
@@ -29,7 +29,7 @@ func (s *service) GetByID(id int) (domain.Turn, error) {
 	return t, nil
 }
 
-// GetByDNI busca un paciente por su dni
+// GetByDNI busca un turno por su dni
 func (s *service) GetByDNI(dni int) (domain.Turn, error) {
 	t, err := s.r.GetByDNI(dni)
 	if err != nil {

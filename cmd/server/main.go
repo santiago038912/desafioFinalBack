@@ -66,7 +66,7 @@ func main() {
 	turns := r.Group("/turns")
 	{
 		turns.GET(":id", turnHandler.GetTurnByID())
-		turns.GET(":dni", turnHandler.GetTurnByDNI())
+		turns.GET("dni/:dni", turnHandler.GetTurnByDNI())
 		turns.POST("", middleware.Authentication(), turnHandler.PostTurn())
 		turns.PUT(":id", middleware.Authentication(), turnHandler.PutTurn())
 		turns.PATCH(":id", middleware.Authentication(), turnHandler.PatchTurn())

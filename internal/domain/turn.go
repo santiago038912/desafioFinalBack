@@ -10,8 +10,6 @@ type Turn struct {
 }
 
 type TurnDTO struct {
-	DentistRegisterNumber string `json:"dentist_register_number,omitempty"`
-	PatientDni            int    `json:"patient_dni,omitempty"`
 	Date                  string `json:"date,omitempty"`
 	Time                  string `json:"time,omitempty"`
 	Description           string `json:"description,omitempty"`

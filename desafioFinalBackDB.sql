@@ -49,6 +49,24 @@ CREATE TABLE `patients` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `turns`
+--
+
+DROP TABLE IF EXISTS `turns`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+
+CREATE TABLE `turns` (
+  `id` int DEFAULT NULL,
+  `dentist_register_number` varchar(50) DEFAULT NULL,
+  `patient_dni` int DEFAULT NULL,
+  `date` varchar(50) DEFAULT NULL,
+  `time` varchar(50) DEFAULT NULL,
+  `description` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Dumping data for table `destists`
 --
 
@@ -69,9 +87,22 @@ LOCK TABLES `patients` WRITE;
 
 /*!40000 ALTER TABLE `patients` DISABLE KEYS */;
 
-INSERT INTO `patients` VALUES (1, 'Roy', 'Barreras', 'Carrera 59 #29 sur - 92',2849573,'10/08/21'),(2, 'Aida', 'Merlano', 'Carrera 20 #85 norte - 10',7492085,'05/12/20'),(2, 'Maria Fernanda', 'Cabal', 'Carrera 69 #420 este - 13',9365921,'30/02/19');
+INSERT INTO `patients` VALUES (1, 'Roy', 'Barreras', 'Carrera 59 #29 sur - 92',2849573,'10/08/21'),(2, 'Aida', 'Merlano', 'Carrera 20 #85 norte - 10',7492085,'05/12/20'),(3, 'Maria Fernanda', 'Cabal', 'Carrera 69 #420 este - 13',9365921,'30/02/19');
 
 /*!40000 ALTER TABLE `patients` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `turns`
+--
+
+LOCK TABLES `turns` WRITE;
+
+/*!40000 ALTER TABLE `turns` DISABLE KEYS */;
+
+INSERT INTO `turns` VALUES (1, '2346-9346', 2849573, '20/12/22','10:00','A este paciente le duele un diente de arriba'),(2, '9458-3845', 7492085, '03/01/23','14:00','A este paciente le duele un diente de abajo'),(3, '6593-5835', 9365921, '22/02/24','14:00','A este paciente le duele un diente del medio');
+
+/*!40000 ALTER TABLE `turns` ENABLE KEYS */;
 UNLOCK TABLES;
 
 

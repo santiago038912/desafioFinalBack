@@ -34,8 +34,8 @@ func (r *repository) GetByID(id int) (domain.Turn, error) {
 }
 
 // GetByDNI busca un turno por su dni
-func (r *repository) GetByDNI(id int) (domain.Turn, error) {
-	turn, err := r.Storage.ReadTurn(id)
+func (r *repository) GetByDNI(dni int) (domain.Turn, error) {
+	turn, err := r.Storage.ReadTurnByDni(dni)
 	if err != nil {
 		return domain.Turn{}, errors.New("turn not found")
 	}
@@ -46,7 +46,7 @@ func (r *repository) GetByDNI(id int) (domain.Turn, error) {
 func (r *repository) Create(turn domain.Turn) (domain.Turn, error) {
 	err := r.Storage.CreateTurn(turn)
 	if err != nil {
-		return domain.Turn{}, errors.New("error creating patient")
+		return domain.Turn{}, errors.New("error creating turn")
 	}
 	return turn, nil
 }
@@ -56,7 +56,7 @@ func (r *repository) Update(id int, turn domain.Turn) (domain.Turn, error) {
 	turn.Id = id
 	err := r.Storage.UpdateTurn(turn)
 	if err != nil {
-		return domain.Turn{}, errors.New("error updating patient")
+		return domain.Turn{}, errors.New("error updating turn")
 	}
 	return turn, nil
 }

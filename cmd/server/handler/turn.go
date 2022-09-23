@@ -83,6 +83,13 @@ func (h *turnHandler) PostTurn() gin.HandlerFunc {
 
 // PutTurn actualiza un turno
 func (h *turnHandler) PutTurn() gin.HandlerFunc {
+	type Request struct {
+		Dentist     domain.Dentist `json:"dentist"`
+		Patient     domain.Patient `json:"patient"`
+		Date        string `json:"date"`
+		Time        string `json:"time"`
+		Description string `json:"description"`
+	}
 	return func(c *gin.Context) {
 		idParam := c.Param("id")
 		id, err := strconv.Atoi(idParam)
@@ -90,18 +97,23 @@ func (h *turnHandler) PutTurn() gin.HandlerFunc {
 			web.Failure(c, 400, errors.New("invalid id"))
 			return
 		}
-		var turn domain.Turn
-		err = c.ShouldBindJSON(&turn)
+		var r Request
+		//var turn domain.Turn
+		err = c.ShouldBindJSON(&r)
 		if err != nil {
 			web.Failure(c, 400, errors.New("invalid json"))
 			return
 		}
-		valid, err := validateEmptysTurn(&turn)
-		if !valid {
-			web.Failure(c, 400, err)
-			return
+
+		update := domain.Turn {
+			Dentist: r.Dentist,
+			Patient: r.Patient,
+			Date: r.Date,
+			Time: r.Time,
+			Description: r.Description,
 		}
-		t, err := h.t.Update(id, turn)
+
+		t, err := h.t.Update(id, update)
 		if err != nil {
 			web.Failure(c, 409, err)
 			return
@@ -112,23 +124,34 @@ func (h *turnHandler) PutTurn() gin.HandlerFunc {
 
 // PatchTurn actualiza un turno
 func (h *turnHandler) PatchTurn() gin.HandlerFunc {
+	type Request struct {
+		Dentist     domain.Dentist `json:"dentist,omitempty"`
+		Patient     domain.Patient `json:"patien,omitemptyt"`
+		Date        string `json:"date,omitempty"`
+		Time        string `json:"time,omitempty"`
+		Description string `json:"description,omitempty"`
+	}
 	return func(c *gin.Context) {
-		var TurnNew domain.TurnDTO
 		idParam := c.Param("id")
 		id, err := strconv.Atoi(idParam)
 		if err != nil {
 			web.Failure(c, 400, errors.New("invalid id"))
 			return
 		}
-		if err := c.ShouldBindJSON(&TurnNew); err != nil {
+		var r Request
+		//var turn domain.Turn
+		err = c.ShouldBindJSON(&r)
+		if err != nil {
 			web.Failure(c, 400, errors.New("invalid json"))
 			return
 		}
 
-		update := domain.Turn{
-			Date: TurnNew.Date,
-			Time: TurnNew.Date,
-			Description: TurnNew.Description,
+		update := domain.Turn {
+			Dentist: r.Dentist,
+			Patient: r.Patient,
+			Date: r.Date,
+			Time: r.Time,
+			Description: r.Description,
 		}
 
 		t, err := h.t.Update(id, update)
